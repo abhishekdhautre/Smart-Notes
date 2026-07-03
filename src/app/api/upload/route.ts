@@ -3,7 +3,8 @@ import { auth } from "@/lib/firebaseAdmin";
 import { index } from "@/lib/db";
 import { chunkText } from "@/lib/chunker";
 import { embedTexts } from "@/lib/embeddings";
-import pdfParse from "pdf-parse";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const pdfParse = require("pdf-parse");
 import { v4 as uuidv4 } from "uuid";
 
 export const runtime = "nodejs";
