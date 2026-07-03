@@ -14,7 +14,7 @@ export async function embedTexts(texts: string[]): Promise<number[][]> {
   const results: number[][] = [];
 
   for (const text of texts) {
-    const output = await embed(text, { pooling: "mean", normalize: true });
+    const output = await embed(text, { pooling: "mean", normalize: true } as never);
     results.push(Array.from(output.data as Float32Array));
   }
 
