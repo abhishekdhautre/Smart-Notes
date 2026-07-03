@@ -1,0 +1,6 @@
+.next/
+node_modules/
+.env.local
+*.pem
+keys/
+.DS_Store
