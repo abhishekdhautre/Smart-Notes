@@ -11,7 +11,7 @@ async function getUserId(req: NextRequest): Promise<string> {
   return decoded.uid;
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   let userId: string;
   try {
     userId = await getUserId(req);
@@ -20,7 +20,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   }
 
   try {
-    const { id: documentId } = params;
+    const { id: documentId } = await params;
 
     // Find all vector IDs for this document
     const results = await index.namespace(userId).query({
