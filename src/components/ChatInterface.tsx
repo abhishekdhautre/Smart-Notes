@@ -44,10 +44,15 @@ export default function ChatInterface({
       });
 
       if (!res.ok || !res.body) {
-        const err = await res.json();
+        let errMsg = "Something went wrong.";
+        try {
+          const err = await res.json();
+          errMsg = err.error ?? errMsg;
+        } catch { /* ignore */ }
         setMessages((prev) =>
-          prev.map((m, i) => (i === assistantIndex ? { ...m, content: err.error ?? "Error" } : m))
+          prev.map((m, i) => (i === assistantIndex ? { ...m, content: errMsg } : m))
         );
+        setStreaming(false);
         return;
       }
 

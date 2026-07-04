@@ -42,11 +42,21 @@ export async function POST(req: NextRequest) {
   });
 
   if (!results.matches?.length) {
-    return new Response(JSON.stringify({ error: "No relevant content found" }), { status: 404 });
+    return new Response(JSON.stringify({ error: "No relevant content found in your documents." }), { status: 404 });
+  }
+
+  // Enforce similarity threshold — below 0.4 means the question isn't answered by this document
+  const SIMILARITY_THRESHOLD = 0.4;
+  const topScore = results.matches[0].score ?? 0;
+  if (topScore < SIMILARITY_THRESHOLD) {
+    return new Response(
+      JSON.stringify({ error: `I couldn't find relevant information to answer that question. The best match was only ${(topScore * 100).toFixed(0)}% similar — try rephrasing or asking about something covered in the document.` }),
+      { status: 404 }
+    );
   }
 
   // 3. Build context from top-k chunks with citations
-  const chunks = results.matches.map((m, i) => ({
+  const chunks = relevantMatches.map((m, i) => ({
     index: i + 1,
     content: m.metadata?.content as string,
     filename: m.metadata?.filename as string,
