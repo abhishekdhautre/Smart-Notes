@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Enforce similarity threshold — below 0.4 means the question isn't answered by this document
-  const SIMILARITY_THRESHOLD = 0.4;
+  const SIMILARITY_THRESHOLD = 0.2;
   const topScore = results.matches[0].score ?? 0;
   if (topScore < SIMILARITY_THRESHOLD) {
     return new Response(
